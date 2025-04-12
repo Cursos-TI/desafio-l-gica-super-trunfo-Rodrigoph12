@@ -1,0 +1,90 @@
+#include <stdio.h>
+#include <string.h>
+
+typedef struct {
+    char estado[50];
+    char codigo[10];
+    char nomeCidade[50];
+    int populacao;
+    float area;
+    float pib;
+    int pontosTuristicos;
+    float densidadePopulacional;
+    float pibPerCapita;
+} Carta;
+
+// Função para cadastrar os dados de uma carta
+void cadastrarCarta(Carta *carta) {
+    printf("Informe o estado: ");
+    scanf(" %[^\n]", carta->estado);
+    printf("Informe o código da carta: ");
+    scanf(" %[^\n]", carta->codigo);
+    printf("Informe o nome da cidade: ");
+    scanf(" %[^\n]", carta->nomeCidade);
+    printf("Informe a população: ");
+    scanf("%d", &carta->populacao);
+    printf("Informe a área (km²): ");
+    scanf("%f", &carta->area);
+    printf("Informe o PIB (em bilhões): ");
+    scanf("%f", &carta->pib);
+    printf("Informe o número de pontos turísticos: ");
+    scanf("%d", &carta->pontosTuristicos);
+
+    // Cálculos
+    if (carta->area > 0)
+        carta->densidadePopulacional = carta->populacao / carta->area;
+    else
+        carta->densidadePopulacional = 0;
+
+    if (carta->populacao > 0)
+        carta->pibPerCapita = carta->pib * 1000000000 / carta->populacao;
+    else
+        carta->pibPerCapita = 0;
+}
+
+// Função para exibir os dados de uma carta
+void exibirCarta(Carta carta) {
+    printf("Estado: %s\n", carta.estado);
+    printf("Código: %s\n", carta.codigo);
+    printf("Cidade: %s\n", carta.nomeCidade);
+    printf("População: %d\n", carta.populacao);
+    printf("Área: %.2f km²\n", carta.area);
+    printf("PIB: %.2f bilhões\n", carta.pib);
+    printf("Pontos Turísticos: %d\n", carta.pontosTuristicos);
+    printf("Densidade Populacional: %.2f hab/km²\n", carta.densidadePopulacional);
+    printf("PIB per capita: %.2f R$\n", carta.pibPerCapita);
+    printf("\n");
+}
+
+// Função para comparar cartas usando o PIB per capita
+void compararCartas(Carta c1, Carta c2) {
+    printf("Comparando as cartas com base no PIB per capita:\n");
+    printf("%s: %.2f R$\n", c1.nomeCidade, c1.pibPerCapita);
+    printf("%s: %.2f R$\n", c2.nomeCidade, c2.pibPerCapita);
+
+    if (c1.pibPerCapita > c2.pibPerCapita) {
+        printf("A carta vencedora é: %s (PIB per capita maior)\n", c1.nomeCidade);
+    } else if (c2.pibPerCapita > c1.pibPerCapita) {
+        printf("A carta vencedora é: %s (PIB per capita maior)\n", c2.nomeCidade);
+    } else {
+        printf("Empate! Ambas as cartas têm o mesmo PIB per capita.\n");
+    }
+}
+
+int main() {
+    Carta carta1, carta2;
+
+    printf("Cadastro da primeira carta:\n");
+    cadastrarCarta(&carta1);
+    printf("\nCadastro da segunda carta:\n");
+    cadastrarCarta(&carta2);
+
+    printf("\n--- Carta 1 ---\n");
+    exibirCarta(carta1);
+    printf("--- Carta 2 ---\n");
+    exibirCarta(carta2);
+
+    compararCartas(carta1, carta2);
+
+    return 0;
+}
